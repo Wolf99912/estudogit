@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Skill Tree</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #1e1e1e; color: white; transition: background 0.3s, color 0.3s; }
+        .tree-container { display: flex; justify-content: center; gap: 20px; }
+        .tree { display: flex; flex-direction: column; align-items: center; border: 2px solid white; padding: 10px; }
+        .skill { padding: 10px; margin: 5px; border: 2px solid gray; cursor: pointer; transition: background-color 0.3s, transform 0.2s; position: relative; }
+        .unlocked { border-color: green; pointer-events: none; background-color: lightgreen; transform: scale(1.1); animation: glow 0.5s ease-in-out; }
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px green; }
+            100% { box-shadow: 0 0 15px green; }
+        }
+        .tree-title { font-weight: bold; margin-bottom: 10px; }
+        .reset-button, .toggle-mode { margin-top: 20px; padding: 10px; font-size: 16px; cursor: pointer; border: none; }
+        .reset-button { background-color: red; color: white; }
+        .toggle-mode { background-color: blue; color: white; }
+        .tooltip { 
+            display: none;
+            position: absolute;
+            background-color: black;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        .skill:hover .tooltip { display: block; }
+    </style>
+</head>
+<body>
+    <h2>Habilidades do Hacker</h2>
+    <h1>Árvore de Habilidades</h1>
+    <p>Pontos disponíveis: <span id="points">10</span></p>
+    <button class="toggle-mode" onclick="toggleMode()">Modo Noturno</button>
+    <div class="tree-container">
+        <div class="tree" id="attack">
+            <div class="tree-title">Ataque</div>
+            <div class="skill" id="skill1" onclick="unlockSkill('skill1', 1)">Eletricista (1 ponto)
+                <div class="tooltip">Oferece +3 de dano extra a escudos e proteções (Apenas armas elétricas).</div>
+            </div>
+            <div class="skill" id="skill2" onclick="unlockSkill('skill2', 2)">Potência Alta (2 pontos)
+                <div class="tooltip">Aumenta o multiplicador de crítico em +1 (Apenas Armas elétricas).</div>
+            </div>
+            <div class="skill" id="skill3" onclick="unlockSkill('skill3', 2)">Sistema Contrário (2 pontos)
+                <div class="tooltip">Pode alterar um comportamento de um robô Ivo.</div>
+            </div>  
+        </div>
+        <div class="tree" id="defense">
+            <div class="tree-title">Defesa</div>
+            <div class="skill" id="skill4" onclick="unlockSkill('skill4', 1)">Acessor (1 ponto)
+                <div class="tooltip">Recebe um bônus para acessar computadores e dispositivos eletrônicos em +3.</div>
+            </div>
+            <div class="skill" id="skill5" onclick="unlockSkill('skill5', 2)">Corruptor (2 pontos)
+                <div class="tooltip">Consegue acesso a um puzzle que se concluído pode corruptar arquivos se preciso.</div>
+            </div>
+            <div class="skill" id="skill6" onclick="unlockSkill('skill6', 2)">Firewall (3 pontos)
+                <div class="tooltip">Ao castar 5 pontos de esforço, pode se criar um firewall personalizado que ganha +5 de resistência cibersegurança.</div>
+            </div>
+        </div>
+        <div class="tree" id="support">
+            <div class="tree-title">Suporte</div>
+            <div class="skill" id="skill7" onclick="unlockSkill('skill7', 1)">Jammer (1 ponto)
+                <div class="tooltip">Possuí acesso ao dispositivo jammer que interfere em objetos próximos eletrônicos.</div>
+            </div>
+            <div class="skill" id="skill8" onclick="unlockSkill('skill8', 2)">Extra Jammer (2 pontos)
+                <div class="tooltip">Aumenta o limite para 2 dispositivos e um bônus +2 em rodadas.</div>
+            </div>
+            <div class="skill" id="skill9" onclick="unlockSkill('skill9', 3)">Blue Team (3 ponto)
+                <div class="tooltip">Ao ativar esta habilidade todos ao redor recebem +4 de dano e +5 de defesa elétrica e cibersegurança.</div>
+            </div>
+        </div>
+    </div>
+    <button class="reset-button" onclick="resetSkills()">Resetar Habilidades</button>
+    
+    <script>
+        let availablePoints = 10;
+        function unlockSkill(skillId, cost) {
+            let skillElement = document.getElementById(skillId);
+            if (availablePoints >= cost && !skillElement.classList.contains('unlocked')) {
+                skillElement.classList.add('unlocked');
+                availablePoints -= cost;
+                document.getElementById('points').innerText = availablePoints;
+                playSound();
+            } else {
+                alert('Pontos insuficientes ou habilidade já adquirida!');
+            }
+        }
+        
+        function resetSkills() {
+            document.querySelectorAll('.skill').forEach(skill => skill.classList.remove('unlocked'));
+            availablePoints = 10;
+            document.getElementById('points').innerText = availablePoints;
+        }
+
+        function playSound() {
+            let sound = new Audio('https://www.fesliyanstudios.com/play-mp3/4386');
+            sound.play();
+        }
+
+        function toggleMode() {
+            let body = document.body;
+            if (body.style.backgroundColor === 'white') {
+                body.style.backgroundColor = '#1e1e1e';
+                body.style.color = 'white';
+            } else {
+                body.style.backgroundColor = 'white';
+                body.style.color = 'black';
+            }
+        }
+    </script>
+</body>
+</html>
